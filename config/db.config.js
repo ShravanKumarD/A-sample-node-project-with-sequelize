@@ -1,19 +1,28 @@
-const mysql = require('mysql2');
-const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize(
-    //  'new_schema', 'root', '8008248021',
-     {
-        HOST:"localhost",
-        USER:"root",
-        PASSWORD:"8008248021",
-        DB:"logbook",
-        dialect:"mysql",
-        pool:{
-            max:5,
-            min:0,
-            acquire:30000,
-            idle:1000
+module.exports = {
+    development: {
+        HOST: "localhost",
+        USER: "root",
+        PASSWORD: "8008248021",
+        DB: "nodeSQL",
+        dialect: "mysql",
+        pool: {
+            max: 5,
+            min: 0,
+            acuire: 30000, //max time in ms that a pool will try to get connection before throwing error
+            idle: 10000  // maximum time in ms that a connection can be idle before being released
         }
-})
-module.exports  = sequelize;
+    },
+    // test: {
+    //     HOST: "localhost",
+    //     USER: "root",
+    //     PASSWORD: "Mohit@19",
+    //     DB: "ecom_test_db",
+    //     dialect: "mysql",
+    //     pool: {
+    //         max: 5,
+    //         min: 0,
+    //         acuire: 30000, //max time in ms that a pool will try to get connection before throwing error
+    //         idle: 10000  // maximum time in ms that a connection can be idle before being released
+    //     }
+    // },
+}

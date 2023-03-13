@@ -1,17 +1,6 @@
-const express = require('express');
-const serverConfig = require('./config/server.config')
-const server =  express();
-const spaceCentreRoutes = require('./routes/spaceCentreRountes');
+const app = require('./index')
+const serverConfig=require("./config/db.config");
 
-const bodyParser = require('body-parser');
-
-server.use(bodyParser.json());
-
-// server.use(server.router);
-// routes.initialize(server);
-
-server.listen(serverConfig.PORT,()=>{
+app.listen(serverConfig.PORT,()=>{
     console.log(`server started at ${serverConfig.PORT}`);
 });
-
-server.use('/space-centres',spaceCentreRoutes);

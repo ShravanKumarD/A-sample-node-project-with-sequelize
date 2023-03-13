@@ -1,34 +1,81 @@
 /**
- * this file will expose the functionalities of all the model files defined under 
- * the models directory
+ * This file will be used for the following purposes :
+ * 1. Create the DB connection with the help of Sequelize
+ * 2. Export all the functionalites of the models model through this file.
+ * 
+ * One of the advantage of using index.js file is, other file trying to import this files, just need
+ * to provide the module name
+ * 
+ * For example : require(./models); // No need to specify the file name index.js
  */
 
-//create the connection with the DB
-const Sequelize = require('sequelize');
-const config  = require('../config/db.config');
+const env = process.env.NODE_ENV || 'development';
+const config = require("../config/db.config")[env];
+const Sequelize = require("sequelize");
 
+//console.log("ENV: " + env);
+ 
 /**
- * creating the db connection 
+ * Creating the DB connection
  */
 const sequelize = new Sequelize(
-    config.DB, 
+    config.DB,
     config.USER,
-    config.PASSWORD,{
-        host : config.HOST,
-        dialect : config.dialect,
-        pool : {
-            max : config.max,
-            min : config.min,
-            acquire:config.idle
+    config.PASSWORD,
+    {
+        host: config.HOST,
+        dialect: config.dialect,
+        operatorsAliases: false,
+        pool: {
+            max: config.pool.max,
+            min: config.pool.min,
+            acquire: config.pool.acquire,
+            idle: config.pool.idle
         }
-    })
+    }
+);
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.spaceCS = require('./spaceResearchcentres')(sequelize, Sequelize);
+db.LVCount =  require('./launchVehiclesCount')(sequelize,Sequelize);
+
+
 /**
- * I need to expose the sequelize and category model
- */
-var  db = {};
+   * Establishing the relationship between Role and User
+   */
+// db.role.belongsToMany(db.user, {
+//     through: "user_roles",
+//     foreignKey: "roleId",
+//     otherKey: "userId"
+// });
+// db.user.belongsToMany(db.role, {
+//     through: "user_roles",
+//     foreignKey: "userId",
+//     otherKey: "roleId"
+// });
 
-db.Sequelize =  Sequelize;
-db.sequelize =  sequelize;
-db.spaceCS = require('./spaceResearchcentres')(sequelize,Sequelize);
+// /**
+//  * Establishing the relationship between Cart and User
+//  */
+//  db.user.hasMany(db.cart);
 
-module.exports =  db;
+//  /**
+//   * Establishing the relationship between Cart and Items : Many to Many
+//   */
+//   db.product.belongsToMany(db.cart, {
+//     through: "cart_products",
+//     foreignKey: "productId",
+//     otherKey: "cartId"
+// });
+// db.cart.belongsToMany(db.product, {
+//     through: "cart_products",
+//     foreignKey: "cartId",
+//     otherKey: "productId"
+// });
+
+// db.ROLES = ["user", "admin"];
+
+
+module.exports = db;
