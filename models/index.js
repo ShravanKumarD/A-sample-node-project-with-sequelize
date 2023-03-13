@@ -41,41 +41,13 @@ db.sequelize = sequelize;
 db.spaceCS = require('./spaceResearchcentres')(sequelize, Sequelize);
 db.LVCount =  require('./launchVehiclesCount')(sequelize,Sequelize);
 
+db.spaceCS.belongsToMany(db.LVCount,{
+    through: "spaceCS_LVCount",
+    foreignKey: "LVC_id", 
+    otherKey: "id"
+});
 
-/**
-   * Establishing the relationship between Role and User
-   */
-// db.role.belongsToMany(db.user, {
-//     through: "user_roles",
-//     foreignKey: "roleId",
-//     otherKey: "userId"
-// });
-// db.user.belongsToMany(db.role, {
-//     through: "user_roles",
-//     foreignKey: "userId",
-//     otherKey: "roleId"
-// });
 
-// /**
-//  * Establishing the relationship between Cart and User
-//  */
-//  db.user.hasMany(db.cart);
-
-//  /**
-//   * Establishing the relationship between Cart and Items : Many to Many
-//   */
-//   db.product.belongsToMany(db.cart, {
-//     through: "cart_products",
-//     foreignKey: "productId",
-//     otherKey: "cartId"
-// });
-// db.cart.belongsToMany(db.product, {
-//     through: "cart_products",
-//     foreignKey: "cartId",
-//     otherKey: "productId"
-// });
-
-// db.ROLES = ["user", "admin"];
 
 
 module.exports = db;
