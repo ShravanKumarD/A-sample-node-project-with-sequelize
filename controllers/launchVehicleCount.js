@@ -13,6 +13,7 @@ exports.LVCount = (req,res,next)=>{
     }).catch(error=>{
         console.log("error occured while adding data to the server")
         res.status(400).json(error);
+        next();
     })
 
 }
